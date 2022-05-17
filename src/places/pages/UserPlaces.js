@@ -1,7 +1,7 @@
 import React from 'react';
+import { useParams } from 'react-router-dom'; // A React hook that gives us access to the dynamic segments of a URL i.e the Route Parameters
 
 import PlaceList from '../components/PlaceList';
-// import './UserPlaces.css';
 
 const DUMMY_PLACES = [
   {
@@ -32,7 +32,9 @@ const DUMMY_PLACES = [
   },
 ];
 const UserPlaces = () => {
-  return <PlaceList items={DUMMY_PLACES} />;
+  const userId = useParams().userId; // This gives us access to the userId that is encoded in the Route Parameter
+  const loadedPlaces = DUMMY_PLACES.filter((place) => place.creator === userId); // Only returns an array of elements where creator matched the userId Route Parameter
+  return <PlaceList items={loadedPlaces} />;
 };
 
 export default UserPlaces;
