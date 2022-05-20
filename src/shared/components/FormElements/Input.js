@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
 
+import { validate } from '../../util/Validators';
 import './Input.css';
 
 const inputReducer = (state, action) => {
@@ -8,7 +9,7 @@ const inputReducer = (state, action) => {
       return {
         ...state,
         value: action.val,
-        isValid: true,
+        isValid: validate(action.val, action.validators),
       };
     default:
       return state;
@@ -22,7 +23,11 @@ const Input = (props) => {
   }); // useReducer is used to manage complex states that performs some functionalities and not just updating the state of a component. It takes a second argument which is the initial state
 
   const changeHandler = (event) => {
-    dispatch({ type: 'CHANGE', val: event.target.value });
+    dispatch({
+      type: 'CHANGE',
+      val: event.target.value,
+      validators: props.validators,
+    });
   };
 
   const element =
