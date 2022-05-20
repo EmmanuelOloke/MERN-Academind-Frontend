@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 
 import { validate } from '../../util/Validators';
 import './Input.css';
@@ -28,6 +28,13 @@ const Input = (props) => {
     isTouched: false,
     isValid: false,
   }); // useReducer is used to manage complex states that performs some functionalities and not just updating the state of a component. It takes a second argument which is the initial state
+
+  const { id, onInput } = props;
+  const { value, isValid } = inputState;
+
+  useEffect(() => {
+    onInput(id, value, isValid);
+  }, [id, value, isValid, onInput]); // Second argument in useEffect is an array of dependencies i.e an array of things that will trigger this useEfect function when they change, in this case, props and inputState
 
   const changeHandler = (event) => {
     dispatch({
