@@ -9,6 +9,7 @@ import {
 import './NewPlace.css';
 
 const formReducer = (state, action) => {
+  // Reducer function
   switch (action.type) {
     case 'INPUT_CHANGE':
       let formIsValid = true;
