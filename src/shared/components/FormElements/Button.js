@@ -12,7 +12,7 @@ const Button = (props) => {
         } ${props.danger && 'button--danger'}`}
         href={props.href}
       >
-        {props.children}{' '}
+        {props.children}
       </a>
     );
   }
@@ -25,7 +25,7 @@ const Button = (props) => {
           props.inverse && 'button--inverse'
         } ${props.danger && 'button--danger'}`}
       >
-        {props.children}{' '}
+        {props.children}
       </Link>
     );
   }
@@ -38,7 +38,7 @@ const Button = (props) => {
       onClick={props.onClick}
       disabled={props.disabled}
     >
-      {props.children}{' '}
+      {props.children}
     </button>
   );
 };
