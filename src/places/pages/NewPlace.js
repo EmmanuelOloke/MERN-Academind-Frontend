@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from 'react';
+import React from 'react';
 
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
@@ -6,37 +6,12 @@ import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from '../../shared/util/validators';
+import { useForm } from '../../shared/hooks/form-hook';
 import './PlaceForm.css';
 
-const formReducer = (state, action) => {
-  // Reducer function
-  switch (action.type) {
-    case 'INPUT_CHANGE':
-      let formIsValid = true;
-      for (const inputId in state.inputs) {
-        if (inputId === action.inputId) {
-          formIsValid = formIsValid && action.isValid;
-        } else {
-          formIsValid = formIsValid && state.inputs[inputId].isValid;
-        }
-      }
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          [action.inputId]: { value: action.value, isValid: action.isValid },
-        },
-        isValid: formIsValid,
-      };
-    default:
-      return state;
-  }
-};
-
 const NewPlace = () => {
-  // useReducer is used to manage complex/multiple states that performs some functionalities and not just updating the state of a component. It takes a second argument which is the initial state.
-  const [formState, dispatch] = useReducer(formReducer, {
-    inputs: {
+  const [formState, inputHandler] = useForm(
+    {
       title: {
         value: '',
         isValid: false,
@@ -50,17 +25,8 @@ const NewPlace = () => {
         isValid: false,
       },
     },
-    isValid: false,
-  });
-
-  const inputHandler = useCallback((id, value, isValid) => {
-    dispatch({
-      type: 'INPUT_CHANGE',
-      value: value,
-      isValid: isValid,
-      inputId: id,
-    });
-  }, []); //useCallback is a React hook used to wrap a function after defining the dependencies under which it should run. Specifying no dependencies means that if the component rerenders the function will be stored away by React and reusec so that no new function object is created everytime the component function rerenders.
+    false
+  ); // Here the initial input and form validities are passed as arguments.
 
   const placeSubmitHandler = (event) => {
     event.preventDefault(); //prevent the HTML default button submit action from triggering so the page doesn't reload.
