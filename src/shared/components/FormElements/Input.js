@@ -24,9 +24,9 @@ const inputReducer = (state, action) => {
 
 const Input = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: '',
+    value: props.value || '',
     isTouched: false,
-    isValid: false,
+    isValid: props.valid || false,
   }); // useReducer is used to manage complex/multiple states that performs some functionalities and not just updating the state of a component. It takes a second argument which is the initial state
 
   const { id, onInput } = props;
@@ -76,9 +76,10 @@ const Input = (props) => {
         !inputState.isValid && inputState.isTouched && 'form-control--invalid'
       }`}
     >
-      <label htmlFor={props.id}>{props.label}</label>
-      {element}
-      {!inputState.isValid && inputState.isTouched && <p>{props.errorText}</p>}
+      <label htmlFor={props.id}> {props.label} </label> {element}{' '}
+      {!inputState.isValid && inputState.isTouched && (
+        <p> {props.errorText} </p>
+      )}{' '}
     </div>
   );
 };
