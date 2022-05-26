@@ -58,8 +58,13 @@ const NewPlace = () => {
     });
   }, []); //useCallback is a React hook used to wrap a function after defining the dependencies under which it should run. Specifying no dependencies means that if the component rerenders the function will be stored away by React and reusec so that no new function object is created everytime the component function rerenders.
 
+  const placeSubmitHandler = (event) => {
+    event.preventDefault(); //prevent the HTML default button submit action from triggering so the page doesn't reload.
+    console.log(formState.inputs); // We're gonna send this to the backend much later
+  };
+
   return (
-    <form className="place-form">
+    <form className="place-form" onSubmit={placeSubmitHandler}>
       <Input
         id="title"
         element="input"
@@ -75,6 +80,14 @@ const NewPlace = () => {
         label="Description"
         validators={[VALIDATOR_MINLENGTH(5)]}
         errorText="Please enter a valid description (at least 5 characters long)."
+        onInput={inputHandler}
+      />
+      <Input
+        id="address"
+        element="input"
+        label="Address"
+        validators={[VALIDATOR_REQUIRE()]}
+        errorText="Please enter a valid address."
         onInput={inputHandler}
       />
       <Button type="submit" disabled={!formState.isValid}>
