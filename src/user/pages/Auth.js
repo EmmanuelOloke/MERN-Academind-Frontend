@@ -53,8 +53,7 @@ const Auth = () => {
 
   return (
     <Card className="authentication">
-      <h2>Login Required</h2>
-      <hr />
+      <h2> Login Required </h2> <hr />
       <form onSubmit={authSubmitHandler}>
         {!isLoginMode && (
           <Input
@@ -89,7 +88,6 @@ const Auth = () => {
           {isLoginMode ? 'LOGIN' : 'SIGNUP'}
         </Button>
       </form>
-
       <Button inverse onClick={switchModeHandler}>
         SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
       </Button>
