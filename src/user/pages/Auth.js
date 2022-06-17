@@ -48,9 +48,32 @@ const Auth = () => {
     setIsLoginMode((prevMode) => !prevMode);
   };
 
-  const authSubmitHandler = (event) => {
+  // Async function because we will work with a promise, and send a http request instead of just doing console.log(). For that we use the fetch() API.
+  const authSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+
+    if (isLoginMode) {
+    } else {
+      try {
+        const response = await fetch('http://localhost:8000/api/users/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formState.inputs.name.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+        }); // The fecth() API, which is provided by browsers in modern JS and used to send HTTP Requests. It takes a string that points at out Backend code
+
+        const responseData = await response.json(); // This returns a promise, hence why we need await keyword.
+        console.log(responseData);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     auth.login();
   };
 
@@ -58,6 +81,7 @@ const Auth = () => {
     <Card className="authentication">
       <h2> Login Required </h2> <hr />
       <form onSubmit={authSubmitHandler}>
+        {' '}
         {!isLoginMode && (
           <Input
             id="name"
@@ -68,7 +92,7 @@ const Auth = () => {
             errorText="Please enter a name"
             onInput={inputHandler}
           />
-        )}
+        )}{' '}
         <Input
           id="email"
           element="input"
@@ -77,7 +101,7 @@ const Auth = () => {
           validators={[VALIDATOR_EMAIL()]}
           errorText="Please enter a valid email address."
           onInput={inputHandler}
-        />
+        />{' '}
         <Input
           id="password"
           element="input"
@@ -86,14 +110,15 @@ const Auth = () => {
           validators={[VALIDATOR_MINLENGTH(8)]}
           errorText="Please enter a valid password with minimum of 8 characters."
           onInput={inputHandler}
-        />
+        />{' '}
         <Button type="submit" disabled={!formState.isValid}>
-          {isLoginMode ? 'LOGIN' : 'SIGNUP'}
-        </Button>
-      </form>
+          {' '}
+          {isLoginMode ? 'LOGIN' : 'SIGNUP'}{' '}
+        </Button>{' '}
+      </form>{' '}
       <Button inverse onClick={switchModeHandler}>
-        SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
-      </Button>
+        SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}{' '}
+      </Button>{' '}
     </Card>
   );
 };
