@@ -16,6 +16,9 @@ import './Auth.css';
 const Auth = () => {
   const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); // Setting up new states to handle loading state and error state
+  const [error, setError] = useState();
+
   const [formState, inputHandler, setFormData] = useForm(
     {
       email: {
@@ -55,6 +58,7 @@ const Auth = () => {
     if (isLoginMode) {
     } else {
       try {
+        setIsLoading(true); // Here we setIsLoading to true because now we are loading and we want the UI to re-render
         const response = await fetch('http://localhost:8000/api/users/signup', {
           method: 'POST',
           headers: {
@@ -69,12 +73,15 @@ const Auth = () => {
 
         const responseData = await response.json(); // This returns a promise, hence why we need await keyword.
         console.log(responseData);
+        setIsLoading(false); // We first clear the local state by setting isLoading to false before calling auth.login() because the state might change. Otherwise we might be updating a state on a component which is not on the screen anymore.
+        auth.login(); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
       } catch (err) {
         console.log(err);
+        setIsLoading(false);
+        setError(err.message || 'Something went wrong, please try again'); // If we have an error while loading we call the setError state.
       }
     }
-
-    auth.login();
+    setIsLoading(false); // setIsLoading back to false here, because at this point loading is done.
   };
 
   return (
