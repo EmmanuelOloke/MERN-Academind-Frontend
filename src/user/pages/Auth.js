@@ -3,6 +3,8 @@ import Card from '../../shared/components/UIElements/Card';
 
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
@@ -72,6 +74,9 @@ const Auth = () => {
         }); // The fecth() API, which is provided by browsers in modern JS and used to send HTTP Requests. It takes a string that points at out Backend code
 
         const responseData = await response.json(); // This returns a promise, hence why we need await keyword.
+        if (!response.ok) {
+          throw new Error(responseData.message); // If we get a 400/500 status code from the result of the fetch API execution, we make sure to throw an error. Because fetch API by defult technically just returns an error status code and not actually throw an error.
+        }
         console.log(responseData);
         setIsLoading(false); // We first clear the local state by setting isLoading to false before calling auth.login() because the state might change. Otherwise we might be updating a state on a component which is not on the screen anymore.
         auth.login(); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
@@ -86,6 +91,7 @@ const Auth = () => {
 
   return (
     <Card className="authentication">
+      {isLoading && <LoadingSpinner asOverlay />}
       <h2> Login Required </h2> <hr />
       <form onSubmit={authSubmitHandler}>
         {' '}
