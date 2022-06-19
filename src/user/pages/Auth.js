@@ -121,7 +121,6 @@ const Auth = () => {
         {isLoading && <LoadingSpinner asOverlay />}
         <h2> Login Required </h2> <hr />
         <form onSubmit={authSubmitHandler}>
-          {' '}
           {!isLoginMode && (
             <Input
               id="name"
@@ -132,7 +131,7 @@ const Auth = () => {
               errorText="Please enter a name"
               onInput={inputHandler}
             />
-          )}{' '}
+          )}
           <Input
             id="email"
             element="input"
@@ -141,7 +140,7 @@ const Auth = () => {
             validators={[VALIDATOR_EMAIL()]}
             errorText="Please enter a valid email address."
             onInput={inputHandler}
-          />{' '}
+          />
           <Input
             id="password"
             element="input"
@@ -150,15 +149,14 @@ const Auth = () => {
             validators={[VALIDATOR_MINLENGTH(8)]}
             errorText="Please enter a valid password with minimum of 8 characters."
             onInput={inputHandler}
-          />{' '}
+          />
           <Button type="submit" disabled={!formState.isValid}>
-            {' '}
-            {isLoginMode ? 'LOGIN' : 'SIGNUP'}{' '}
-          </Button>{' '}
-        </form>{' '}
+            {isLoginMode ? 'LOGIN' : 'SIGNUP'}
+          </Button>
+        </form>
         <Button inverse onClick={switchModeHandler}>
-          SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}{' '}
-        </Button>{' '}
+          SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
+        </Button>
       </Card>
     </React.Fragment>
   );
