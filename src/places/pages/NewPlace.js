@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
@@ -34,6 +35,8 @@ const NewPlace = () => {
     false
   ); // Here the initial input and form validities are passed as arguments.
 
+  const history = useHistory(); // This gives us a history object, which has .push() and .replace() methods, which allows us to push a new path on to the url or replace the url entirely
+
   const placeSubmitHandler = async (event) => {
     event.preventDefault(); //prevent the HTML default button submit action from triggering so the page doesn't reload.
 
@@ -49,7 +52,7 @@ const NewPlace = () => {
         }),
         { 'Content-Type': 'application/json' } // We need to add this, otherwise the body parser on the backend would not be able to parse it and the backend eventually will not be able to find the appropriate data
       );
-      //Redirect the user to a different page
+      history.push('/'); // Here we're using the history object to push the user to /, i.e the starting page
     } catch {}
   };
 
