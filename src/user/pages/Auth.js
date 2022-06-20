@@ -59,7 +59,7 @@ const Auth = () => {
 
     if (isLoginMode) {
       try {
-        await sendRequest(
+        const responseData = await sendRequest(
           'http://localhost:8000/api/users/login',
           'POST',
           JSON.stringify({
@@ -70,11 +70,11 @@ const Auth = () => {
             'Content-Type': 'application/json',
           }
         ); // Making use of the functions in the http-hook.js file to manage backend connection and request sending
-        auth.login(); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
+        auth.login(responseData.user.id); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
       } catch (err) {}
     } else {
       try {
-        await sendRequest(
+        const responseData = await sendRequest(
           'http://localhost:8000/api/users/signup',
           'POST',
           JSON.stringify({
@@ -87,7 +87,7 @@ const Auth = () => {
           }
         ); // The fecth() API, which is provided by browsers in modern JS and used to send HTTP Requests. It takes a string that points at out Backend code
 
-        auth.login(); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
+        auth.login(responseData.user.id); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
       } catch (err) {}
     }
   };
