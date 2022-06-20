@@ -21,15 +21,20 @@ export const useHttpClient = () => { // In here we'll manage the loading and err
 
             // Extract the response data and throw an error if we have a 400/500 error
             const responseData = await response.json(); // This returns a promise, hence why we need await keyword.
+
+            activeHttpRequests.current = activeHttpRequests.current.filter(reqCtrl => reqCtrl !== httpAbortCtrl);
+
             if (!response.ok) {
                 throw new Error(responseData.message); // If we get a 400/500 status code from the result of the fetch API execution, we make sure to throw an error. Because fetch API by defult technically just returns an error status code and not actually throw an error.
             }
 
+            setIsLoading(false);
             return responseData;
         } catch (err) {
             setError(err.message);
+            setIsLoading(false);
+            throw err; // We throw the err here, so that the component that uses our hook will know that there is an error
         }
-        setIsLoading(false);
     }, []); // We used useCallback here to avoid infinte loops, so that this function never gets recreated when the component that uses this hook gets rerendered. This funciton has no specific dependencies, that's why we added an empty array.
 
     const clearError = () => {
