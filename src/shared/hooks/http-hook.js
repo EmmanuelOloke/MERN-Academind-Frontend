@@ -7,7 +7,7 @@ export const useHttpClient = () => { // In here we'll manage the loading and err
 
     const activeHttpRequests = useRef([]); // In the case that we switch the page while we have an ongoing request, we want to cancel the ongoing http request. useRef here because we want to turn it into a reference. A reference is a piece of data which will not change/be reinitialized whren the code runs again. Stores data across rerendered cycles.
 
-    const sendRequest = useCallback(async(url, method = 'GET', body = null, headers = {}) => { // The request need to be configurable, hence why we declare it with all these parameters.
+    const sendRequest = useCallback(async(url, method = 'GET', body = null, headers = {}) => { // The request need to be configurable, hence why we declare it with all these parameters. And it needed to be wrapped with useCallback because if not, it will be re-created whenever the hook reruns
         setIsLoading(true);
         const httpAbortCtrl = new AbortController(); // This is an API supported functionality built into modern browsers
         activeHttpRequests.current.push(httpAbortCtrl); // useRef always wraps the data we store in it in an object with a current property
