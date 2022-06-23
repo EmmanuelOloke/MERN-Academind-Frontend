@@ -42,12 +42,21 @@ const Auth = () => {
         {
           ...formState.inputs,
           name: undefined,
+          image: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
     } else {
       setFormData(
-        { ...formState.inputs, name: { value: '', isValid: false } },
+        {
+          ...formState.inputs,
+          name: { value: '', isValid: false },
+          image: {
+            // Managing the initial image state
+            value: null,
+            isValid: false,
+          },
+        },
         false
       );
     }
@@ -57,6 +66,8 @@ const Auth = () => {
   // Async function because we will work with a promise, and send a http request instead of just doing console.log(). For that we use the fetch() API.
   const authSubmitHandler = async (event) => {
     event.preventDefault();
+
+    console.log(formState.inputs);
 
     if (isLoginMode) {
       try {
@@ -112,7 +123,9 @@ const Auth = () => {
             />
           )}
           {/* Only show the image upload button when we are in signup mode*/}
-          {!isLoginMode && <ImageUpload id="image" center />}
+          {!isLoginMode && (
+            <ImageUpload id="image" center onInput={inputHandler} />
+          )}
           <Input
             id="email"
             element="input"
