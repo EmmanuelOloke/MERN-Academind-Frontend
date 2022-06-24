@@ -86,17 +86,15 @@ const Auth = () => {
       } catch (err) {}
     } else {
       try {
+        const formData = new FormData(); // We use formData, which is a format already build into JS for handling both text and none-text files e.g images and files
+        formData.append('email', formState.inputs.email.value);
+        formData.append('name', formState.inputs.name.value);
+        formData.append('password', formState.inputs.password.value);
+        formData.append('image', formState.inputs.image.value);
         const responseData = await sendRequest(
           'http://localhost:8000/api/users/signup',
           'POST',
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
-          }),
-          {
-            'Content-Type': 'application/json',
-          }
+          formData // We now send formData instead of JSON.stringify.
         ); // The fecth() API, which is provided by browsers in modern JS and used to send HTTP Requests. It takes a string that points at out Backend code
 
         auth.login(responseData.user.id); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
