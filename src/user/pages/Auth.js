@@ -120,7 +120,12 @@ const Auth = () => {
           )}
           {/* Only show the image upload button when we are in signup mode*/}
           {!isLoginMode && (
-            <ImageUpload id="image" center onInput={inputHandler} />
+            <ImageUpload
+              id="image"
+              center
+              onInput={inputHandler}
+              errorText="Please provide an image."
+            />
           )}
           <Input
             id="email"
