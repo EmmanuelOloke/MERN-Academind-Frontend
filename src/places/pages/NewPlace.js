@@ -32,6 +32,10 @@ const NewPlace = () => {
         value: '',
         isValid: false,
       },
+      image: {
+        value: null,
+        isValid: false,
+      },
     },
     false
   ); // Here the initial input and form validities are passed as arguments.
@@ -42,17 +46,13 @@ const NewPlace = () => {
     event.preventDefault(); //prevent the HTML default button submit action from triggering so the page doesn't reload.
 
     try {
-      await sendRequest(
-        'http://localhost:8000/api/places',
-        'POST',
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          address: formState.inputs.address.value,
-          creator: auth.userId,
-        }),
-        { 'Content-Type': 'application/json' } // We need to add this, otherwise the body parser on the backend would not be able to parse it and the backend eventually will not be able to find the appropriate data
-      );
+      const formData = new FormData();
+      formData.append('title', formState.inputs.title.value);
+      formData.append('description', formState.inputs.description.value);
+      formData.append('address', formState.inputs.address.value);
+      formData.append('creator', auth.userId);
+      formData.append('image', formState.inputs.image.value);
+      await sendRequest('http://localhost:8000/api/places', 'POST', formData);
       history.push('/'); // Here we're using the history object to push the user to /, i.e the starting page
     } catch {}
   };
