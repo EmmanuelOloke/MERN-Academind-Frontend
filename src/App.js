@@ -19,6 +19,10 @@ const App = () => {
 
   const login = useCallback((uid, token) => {
     setToken(token);
+    localStorage.setItem(
+      'userData',
+      JSON.stringify({ userId: uid, token: token })
+    ); // Using localStorage which is a browser functionality to store out token, so we don't get logged on every refresh. You can only write text or data that can be converted into text to the localStorage object, that's why we had to use JSON.stringify()
     setUserId(uid);
   }, []);
 
