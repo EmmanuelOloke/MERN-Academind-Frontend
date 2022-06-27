@@ -11,6 +11,7 @@ export const useHttpClient = () => { // In here we'll manage the loading and err
         setIsLoading(true);
         const httpAbortCtrl = new AbortController(); // This is an API supported functionality built into modern browsers
         activeHttpRequests.current.push(httpAbortCtrl); // useRef always wraps the data we store in it in an object with a current property
+
         try {
             const response = await fetch(url, {
                 method,

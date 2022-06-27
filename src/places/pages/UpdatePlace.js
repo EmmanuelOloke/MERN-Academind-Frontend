@@ -74,6 +74,7 @@ const UpdatePlace = () => {
         }),
         {
           'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token, // Attaching the authorization token to the update header
         }
       ); // This is not a default request, so we must attach the PATCH method to it.
       history.push('/' + auth.userId + '/places'); // Redirected the user to /:userId/places

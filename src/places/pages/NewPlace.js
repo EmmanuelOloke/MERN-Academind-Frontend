@@ -44,7 +44,6 @@ const NewPlace = () => {
 
   const placeSubmitHandler = async (event) => {
     event.preventDefault(); //prevent the HTML default button submit action from triggering so the page doesn't reload.
-
     try {
       const formData = new FormData();
       formData.append('title', formState.inputs.title.value);
@@ -52,7 +51,10 @@ const NewPlace = () => {
       formData.append('address', formState.inputs.address.value);
       formData.append('creator', auth.userId);
       formData.append('image', formState.inputs.image.value);
-      await sendRequest('http://localhost:8000/api/places', 'POST', formData);
+      await sendRequest('http://localhost:8000/api/places', 'POST', formData, {
+        // Attaching the token to outgoing requests headers, using the format in check-auth.js on the backend
+        Authorization: 'Bearer ' + auth.token,
+      });
       history.push('/'); // Here we're using the history object to push the user to /, i.e the starting page
     } catch {}
   };

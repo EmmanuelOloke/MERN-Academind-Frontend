@@ -80,7 +80,7 @@ const Auth = () => {
             'Content-Type': 'application/json',
           }
         ); // Making use of the functions in the http-hook.js file to manage backend connection and request sending
-        auth.login(responseData.user.id); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
+        auth.login(responseData.userId, responseData.token); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
       } catch (err) {}
     } else {
       try {
@@ -95,7 +95,7 @@ const Auth = () => {
           formData // We now send formData instead of JSON.stringify.
         ); // The fecth() API, which is provided by browsers in modern JS and used to send HTTP Requests. It takes a string that points at out Backend code
 
-        auth.login(responseData.user.id); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
+        auth.login(responseData.userId, responseData.token); // We only want to call auth.login() if we didn't have an error, hence why we do it here in the try block
       } catch (err) {}
     }
   };
