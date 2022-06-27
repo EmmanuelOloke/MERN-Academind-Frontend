@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -30,6 +30,14 @@ const App = () => {
     setToken(null);
     setUserId(null);
   }, []);
+
+  useEffect(() => {
+    // Adding a function to check the browser localStorage for a token once the app starts. The dependencies of the function is an empty array which means the function will only run once
+    const storedData = JSON.parse(localStorage.getItem('userData')); // We use the getItem method on localStorageand pass in the key which we used to store the token, which in this case is userData. We use the JSON.parse method so we can convert JSON strings to regular JS DS like Object
+    if (storedData && storedData.token) {
+      login(storedData.userId, storedData.token);
+    }
+  }, [login]);
 
   let routes;
 
