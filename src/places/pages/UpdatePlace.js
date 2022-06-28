@@ -41,7 +41,7 @@ const UpdatePlace = () => {
     const fetchPlace = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:8000/api/places/${placeId}`
+          process.env.REACT_APP_BACKEND_URL + `/places/${placeId}`
         ); // This is a default GET request, so we can omit specifying the GET method
         setLoadedPlace(responseData.place);
         setFormData(
@@ -66,7 +66,7 @@ const UpdatePlace = () => {
     event.preventDefault();
     try {
       await sendRequest(
-        `http://localhost:8000/api/places/${placeId}`,
+        process.env.REACT_APP_BACKEND_URL + `/places/${placeId}`,
         'PATCH',
         JSON.stringify({
           title: formState.inputs.title.value,

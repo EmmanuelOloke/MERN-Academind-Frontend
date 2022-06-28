@@ -15,7 +15,7 @@ const Users = () => {
     const fetchUsers = async () => {
       try {
         const responseData = await sendRequest(
-          'http://localhost:8000/api/users'
+          process.env.REACT_APP_BACKEND_URL + '/users'
         ); // We use the custom hook here to send request to the specified url
 
         setLoadedUsers(responseData.users); // The responseData we get back is an array of users, as defined in the getUsers function in the backend users-controllers.js file

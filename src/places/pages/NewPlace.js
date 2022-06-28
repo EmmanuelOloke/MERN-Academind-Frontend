@@ -50,10 +50,15 @@ const NewPlace = () => {
       formData.append('description', formState.inputs.description.value);
       formData.append('address', formState.inputs.address.value);
       formData.append('image', formState.inputs.image.value);
-      await sendRequest('http://localhost:8000/api/places', 'POST', formData, {
-        // Attaching the token to outgoing requests headers, using the format in check-auth.js on the backend
-        Authorization: 'Bearer ' + auth.token,
-      });
+      await sendRequest(
+        process.env.REACT_APP_BACKEND_URL + '/places',
+        'POST',
+        formData,
+        {
+          // Attaching the token to outgoing requests headers, using the format in check-auth.js on the backend
+          Authorization: 'Bearer ' + auth.token,
+        }
+      );
       history.push('/'); // Here we're using the history object to push the user to /, i.e the starting page
     } catch {}
   };
