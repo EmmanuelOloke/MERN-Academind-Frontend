@@ -13,8 +13,11 @@ import UpdatePlace from './places/pages/UpdatePlace';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 import { AuthContext } from './shared/context/auth-context';
 
+let logoutTimer; // We declare it outside of the app because it's just some behind the scene variable that we need to manage and not something that will rerender the component or anything
+
 const App = () => {
   const [token, setToken] = useState(false);
+  const [tokenExpirationDate, setTokenExpirationDate] = useState();
   const [userId, setUserId] = useState(false);
 
   const login = useCallback((uid, token, expirationDate) => {
@@ -22,6 +25,7 @@ const App = () => {
     setUserId(uid);
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60); // This gives us a new date which is current date/time at login time plus 1 hour, since the expiration time we set on the backend is 1 hour
+    setTokenExpirationDate(tokenExpirationDate);
     localStorage.setItem(
       'userData',
       JSON.stringify({
@@ -34,9 +38,21 @@ const App = () => {
 
   const logout = useCallback(() => {
     setToken(null);
+    setTokenExpirationDate(null);
     setUserId(null);
     localStorage.removeItem('userData');
   }, []);
+
+  useEffect(() => {
+    // We set the timer here whenever the token changes, so the dependencies here are the token and the logout function, and the tokenExpirationDate. The token changes when we login or logout
+    if (token && tokenExpirationDate) {
+      const remainingTime =
+        tokenExpirationDate.getTime() - new Date().getTime();
+      logoutTimer = setTimeout(logout, remainingTime);
+    } else {
+      clearTimeout(logoutTimer);
+    }
+  }, [token, logout, tokenExpirationDate]);
 
   useEffect(() => {
     // Adding a function to check the browser localStorage for a token once the app starts. The dependencies of the function is an empty array which means the function will only run once
